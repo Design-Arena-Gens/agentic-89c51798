@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques - Révision 4ème</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            font-size: 1.5em;
+        }
+
+        .formula {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            border: 2px dashed #667eea;
+            text-align: center;
+        }
+
+        .example {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
+
+        .example-title {
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .steps {
+            margin-left: 20px;
+        }
+
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .practice {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .practice h2 {
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: rgba(255,255,255,0.9);
+        }
+
+        input:focus {
+            outline: 3px solid #ffd700;
+            background: white;
+        }
+
+        button {
+            background: #ffd700;
+            color: #333;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            background: white;
+            color: #333;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-label {
+            font-weight: bold;
+            color: #764ba2;
+            font-size: 1.1em;
+        }
+
+        .result-value {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .result-explanation {
+            color: #666;
+            font-size: 0.95em;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .sorted-values {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px solid #667eea;
+        }
+
+        .value-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .value-item {
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .value-item.highlight {
+            background: #ffd700;
+            color: #333;
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255,215,0,0.5);
+        }
+
+        .tip {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .tip-icon {
+            color: #ffc107;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .quick-ref {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .quick-ref h3 {
+            color: #155724;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .quick-ref-item {
+            background: white;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Statistiques - Révision</h1>
+        <p class="subtitle">Prépare ton évaluation de 4ème !</p>
+
+        <!-- LA MOYENNE -->
+        <div class="section">
+            <h2><span class="icon">📈</span> La Moyenne</h2>
+            <p><strong>Définition :</strong> La moyenne est la somme de toutes les valeurs divisée par le nombre de valeurs.</p>
+
+            <div class="formula">
+                Moyenne = (Somme de toutes les valeurs) ÷ (Nombre de valeurs)
+            </div>
+
+            <div class="example">
+                <div class="example-title">📝 Exemple : Notes de maths</div>
+                <p><strong>Notes :</strong> 12, 15, 8, 14, 16</p>
+                <div class="steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <strong>Additionner toutes les notes :</strong><br>
+                        12 + 15 + 8 + 14 + 16 = 65
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <strong>Compter le nombre de notes :</strong><br>
+                        Il y a 5 notes
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <strong>Diviser la somme par le nombre :</strong><br>
+                        65 ÷ 5 = 13
+                    </div>
+                    <div class="step">
+                        <span class="step-number">✓</span>
+                        <strong>Résultat :</strong> La moyenne est <strong>13</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <span class="tip-icon">💡</span>
+                <strong>Astuce :</strong> La moyenne te donne une idée générale de tes résultats. Elle est influencée par toutes les valeurs, même les extrêmes !
+            </div>
+        </div>
+
+        <!-- LA MÉDIANE -->
+        <div class="section">
+            <h2><span class="icon">📊</span> La Médiane</h2>
+            <p><strong>Définition :</strong> La médiane est la valeur du milieu quand on range les nombres dans l'ordre croissant.</p>
+
+            <div class="formula">
+                Médiane = La valeur centrale (après avoir rangé les nombres)
+            </div>
+
+            <div class="example">
+                <div class="example-title">📝 Exemple 1 : Nombre impair de valeurs</div>
+                <p><strong>Notes :</strong> 8, 15, 12, 16, 14</p>
+                <div class="steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <strong>Ranger dans l'ordre croissant :</strong><br>
+                        8, 12, 14, 15, 16
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <strong>Trouver la valeur du milieu :</strong><br>
+                        Il y a 5 valeurs → la 3ème est au milieu<br>
+                        8, 12, <strong style="color: #667eea; font-size: 1.2em;">14</strong>, 15, 16
+                    </div>
+                    <div class="step">
+                        <span class="step-number">✓</span>
+                        <strong>Résultat :</strong> La médiane est <strong>14</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📝 Exemple 2 : Nombre pair de valeurs</div>
+                <p><strong>Notes :</strong> 8, 12, 14, 16</p>
+                <div class="steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <strong>Ranger dans l'ordre croissant :</strong><br>
+                        8, 12, 14, 16
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <strong>Prendre les 2 valeurs du milieu :</strong><br>
+                        8, <strong style="color: #667eea;">12, 14</strong>, 16
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <strong>Calculer leur moyenne :</strong><br>
+                        (12 + 14) ÷ 2 = 26 ÷ 2 = 13
+                    </div>
+                    <div class="step">
+                        <span class="step-number">✓</span>
+                        <strong>Résultat :</strong> La médiane est <strong>13</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <span class="tip-icon">💡</span>
+                <strong>Astuce :</strong> La médiane n'est PAS influencée par les valeurs extrêmes. La moitié des valeurs sont en dessous, la moitié au dessus !
+            </div>
+        </div>
+
+        <!-- L'ÉTENDUE -->
+        <div class="section">
+            <h2><span class="icon">📏</span> L'Étendue</h2>
+            <p><strong>Définition :</strong> L'étendue mesure la dispersion des valeurs. C'est la différence entre la plus grande et la plus petite valeur.</p>
+
+            <div class="formula">
+                Étendue = Valeur maximale - Valeur minimale
+            </div>
+
+            <div class="example">
+                <div class="example-title">📝 Exemple : Températures de la semaine</div>
+                <p><strong>Températures :</strong> 12°C, 18°C, 15°C, 20°C, 10°C, 17°C</p>
+                <div class="steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <strong>Trouver la température maximale :</strong><br>
+                        La plus grande valeur est <strong>20°C</strong>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <strong>Trouver la température minimale :</strong><br>
+                        La plus petite valeur est <strong>10°C</strong>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <strong>Calculer la différence :</strong><br>
+                        20 - 10 = 10
+                    </div>
+                    <div class="step">
+                        <span class="step-number">✓</span>
+                        <strong>Résultat :</strong> L'étendue est <strong>10°C</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <span class="tip-icon">💡</span>
+                <strong>Astuce :</strong> Plus l'étendue est grande, plus les valeurs sont dispersées. Une petite étendue signifie que les valeurs sont proches les unes des autres !
+            </div>
+        </div>
+
+        <!-- PRATIQUE INTERACTIVE -->
+        <div class="practice">
+            <h2>🎯 Entraîne-toi !</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Entre des nombres séparés par des virgules ou des espaces</p>
+
+            <div class="input-group">
+                <label for="values">Tes valeurs :</label>
+                <input type="text" id="values" placeholder="Ex: 12, 15, 8, 14, 16  ou  12 15 8 14 16" />
+            </div>
+
+            <button onclick="calculateStats()">Calculer les statistiques !</button>
+
+            <div id="results" class="results">
+                <div class="sorted-values">
+                    <strong>📋 Valeurs triées :</strong>
+                    <div id="sortedList" class="value-list"></div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">📈 Moyenne</div>
+                    <div class="result-value" id="meanValue"></div>
+                    <div class="result-explanation" id="meanExplanation"></div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">📊 Médiane</div>
+                    <div class="result-value" id="medianValue"></div>
+                    <div class="result-explanation" id="medianExplanation"></div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">📏 Étendue</div>
+                    <div class="result-value" id="rangeValue"></div>
+                    <div class="result-explanation" id="rangeExplanation"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÉMO RAPIDE -->
+        <div class="quick-ref">
+            <h3>📌 Mémo pour l'évaluation</h3>
+            <div class="quick-ref-item">
+                <strong>Moyenne :</strong> (Somme de toutes les valeurs) ÷ (Nombre de valeurs)
+            </div>
+            <div class="quick-ref-item">
+                <strong>Médiane :</strong> Ranger les valeurs puis prendre celle du milieu (ou la moyenne des 2 du milieu si nombre pair)
+            </div>
+            <div class="quick-ref-item">
+                <strong>Étendue :</strong> Plus grande valeur - Plus petite valeur
+            </div>
+            <div class="quick-ref-item" style="background: #fff3cd;">
+                <strong>⚠️ N'oublie pas :</strong> Toujours ranger les valeurs dans l'ordre croissant pour la médiane !
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateStats() {
+            const input = document.getElementById('values').value;
+
+            // Parse les valeurs (accepte virgules et espaces)
+            const values = input.split(/[\s,]+/)
+                .map(v => v.trim())
+                .filter(v => v !== '')
+                .map(v => parseFloat(v))
+                .filter(v => !isNaN(v));
+
+            if (values.length === 0) {
+                alert('⚠️ Entre au moins un nombre valide !');
+                return;
+            }
+
+            // Tri pour la médiane
+            const sorted = [...values].sort((a, b) => a - b);
+
+            // MOYENNE
+            const sum = values.reduce((acc, val) => acc + val, 0);
+            const mean = sum / values.length;
+
+            // MÉDIANE
+            let median;
+            const mid = Math.floor(sorted.length / 2);
+            if (sorted.length % 2 === 0) {
+                median = (sorted[mid - 1] + sorted[mid]) / 2;
+            } else {
+                median = sorted[mid];
+            }
+
+            // ÉTENDUE
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const range = max - min;
+
+            // Affichage
+            displayResults(values, sorted, mean, median, range, min, max, sum);
+        }
+
+        function displayResults(values, sorted, mean, median, range, min, max, sum) {
+            // Afficher les valeurs triées
+            const sortedList = document.getElementById('sortedList');
+            sortedList.innerHTML = '';
+            sorted.forEach((val, idx) => {
+                const div = document.createElement('div');
+                div.className = 'value-item';
+
+                // Surligner la médiane
+                const mid = Math.floor(sorted.length / 2);
+                if (sorted.length % 2 === 1 && idx === mid) {
+                    div.classList.add('highlight');
+                } else if (sorted.length % 2 === 0 && (idx === mid - 1 || idx === mid)) {
+                    div.classList.add('highlight');
+                }
+
+                div.textContent = val;
+                sortedList.appendChild(div);
+            });
+
+            // MOYENNE
+            document.getElementById('meanValue').textContent = mean.toFixed(2);
+            document.getElementById('meanExplanation').innerHTML =
+                `<strong>Calcul :</strong> (${values.join(' + ')}) ÷ ${values.length} = ${sum} ÷ ${values.length} = ${mean.toFixed(2)}`;
+
+            // MÉDIANE
+            document.getElementById('medianValue').textContent = median.toFixed(2);
+            if (sorted.length % 2 === 1) {
+                const mid = Math.floor(sorted.length / 2);
+                document.getElementById('medianExplanation').innerHTML =
+                    `<strong>Calcul :</strong> Il y a ${sorted.length} valeurs (impair). La valeur du milieu est en position ${mid + 1} : <strong>${sorted[mid]}</strong>`;
+            } else {
+                const mid = Math.floor(sorted.length / 2);
+                document.getElementById('medianExplanation').innerHTML =
+                    `<strong>Calcul :</strong> Il y a ${sorted.length} valeurs (pair). Les 2 valeurs du milieu sont ${sorted[mid - 1]} et ${sorted[mid]}. Leur moyenne : (${sorted[mid - 1]} + ${sorted[mid]}) ÷ 2 = ${median.toFixed(2)}`;
+            }
+
+            // ÉTENDUE
+            document.getElementById('rangeValue').textContent = range.toFixed(2);
+            document.getElementById('rangeExplanation').innerHTML =
+                `<strong>Calcul :</strong> Valeur max (${max}) - Valeur min (${min}) = ${range.toFixed(2)}`;
+
+            // Afficher les résultats avec animation
+            document.getElementById('results').classList.add('show');
+
+            // Scroll vers les résultats
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Permettre la validation avec Enter
+        document.getElementById('values').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateStats();
+            }
+        });
+    </script>
+</body>
+</html>
